@@ -25,7 +25,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'Shougo/vimproc.vim', { 'dir': '~/.vim/plugged/vimproc.vim', 'do': 'make' }
 Plug 'Shougo/vimshell.vim'
 Plug 'marijnh/tern_for_vim', { 'dir': '~/.vim/plugged/tern_for_vim', 'do': 'npm i' }
-Plug 'Valloric/YouCompleteMe', { 'dir': '~/.vim/plugged/YouCompleteMe', 'do': './install.sh' }
+"Plug 'Valloric/YouCompleteMe', { 'dir': '~/.vim/plugged/YouCompleteMe', 'do': './install.sh' }
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffe' }
 Plug 'wavded/vim-stylus', { 'for': 'styl' }
@@ -119,6 +119,12 @@ nmap <Leader>' :NERDTreeToggle<CR>
 nmap <Leader>; :NERDTree %<CR>
 vmap a: :Tab /:<CR>
 vmap a= :Tab /=<CR>
+
+nmap <Leader>d :TernDef<CR>
+nmap <Leader>D :TernDoc<CR>
+nmap <Leader>t :TernType<CR>
+nmap <Leader>r :TernRefs<CR>
+nmap <Leader>R :TernRename<CR>
 
 nnoremap <silent> F :Grep<CR> 
 nnoremap <CR> :nohlsearch<CR><CR>

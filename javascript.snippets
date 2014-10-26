@@ -1,3 +1,6 @@
+#File name
+snippet filename
+	`Filename()`
 # Prototype
 snippet proto
 	${1:class_name}.prototype.${2:method_name} = function(${3:first_argument}) {
@@ -152,3 +155,10 @@ snippet /prd
 	 * @type {${2:Number}}
 	 * @default ${3}
 	 */
+snippet todo
+	/**
+	 * @TODO ${1:description}
+	 *
+	 * data `strftime("%d/%m/%y %H:%M:%S")`
+	 * from `g:snips_author`
+	 */${2}

@@ -83,6 +83,7 @@ else
     colorscheme jellybeans
 endif
 
+let g:snips_author = system("git config user.name")
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
 let g:molokai_original=1

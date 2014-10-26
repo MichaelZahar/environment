@@ -98,7 +98,7 @@ let jshint2_confirm = 0
 map <F1> :set background=dark<CR>
 map <F2> :set background=light<CR>
 
-nmap K i<CR><ESC>
+nmap K A<CR><ESC>
 nmap cn :cnext<CR>
 nmap cp :cprev<CR>
 nmap <silent> <Leader>q :copen<CR>

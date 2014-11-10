@@ -16,12 +16,16 @@ Plug 'mattn/emmet-vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'msanders/snipmate.vim'
 Plug 'Shutnik/jshint2.vim'
-Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic' ", { 'dir': '~/.vim/plugged/syntastic/', 'do': 'mkdir temp/ && git clone https://github.com/dstrek/syntastic-jsxhint.git temp/ && mv temp/jsx/ syntax_checkers/ && rm -rf temp/' }
 Plug 'jelera/vim-javascript-syntax'
+Plug 'heavenshell/vim-jsdoc'
 Plug 'vim-scripts/JavaScript-Indent'
 Plug 'phleet/vim-mercenary'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'mxw/vim-jsx'
 Plug 'Raimondi/delimitMate'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'Shougo/vimproc.vim', { 'dir': '~/.vim/plugged/vimproc.vim', 'do': 'make' }
 Plug 'Shougo/vimshell.vim'
 Plug 'marijnh/tern_for_vim', { 'dir': '~/.vim/plugged/tern_for_vim', 'do': 'npm i' }
@@ -90,11 +94,13 @@ let g:molokai_original=1
 let g:airline#extensions#tabline#enabled=1
 " let mapleader=','
 
-let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers = [ 'jshint', 'jsxhint' ]
 let jshint2_read = 1
 let jshint2_save = 1
 let jshint2_close = 0
 let jshint2_confirm = 0
+
+let g:jsx_pragma_required = 1
 
 map <F1> :set background=dark<CR>
 map <F2> :set background=light<CR>
@@ -134,5 +140,11 @@ map <Leader>s :VimShell -split -split-command=split<CR>
 
 nnoremap <silent> <C-d> :lclose<CR>:bdelete<CR>
 cabbrev <silent> bd lclose\|bdelete
+
+let g:EasyMotion_do_mapping = 0
+nmap s <Plug>(easymotion-s)
+nmap S <Plug>(easymotion-s2)
+let g:EasyMotion_smartcase = 1
+map  <leader>/ <Plug>(easymotion-sn)
 
 au BufReadPost,BufWritePost *.js :SyntasticCheck

@@ -15,24 +15,22 @@ Plug 'godlygeek/tabular'
 Plug 'mattn/emmet-vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'msanders/snipmate.vim'
-Plug 'Shutnik/jshint2.vim'
-Plug 'scrooloose/syntastic' ", { 'dir': '~/.vim/plugged/syntastic/', 'do': 'mkdir temp/ && git clone https://github.com/dstrek/syntastic-jsxhint.git temp/ && mv temp/jsx/ syntax_checkers/ && rm -rf temp/' }
+Plug 'scrooloose/syntastic'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'vim-scripts/JavaScript-Indent'
 Plug 'phleet/vim-mercenary'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'mxw/vim-jsx'
 Plug 'Raimondi/delimitMate'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'Shougo/vimproc.vim', { 'dir': '~/.vim/plugged/vimproc.vim', 'do': 'make' }
-Plug 'Shougo/vimshell.vim'
-Plug 'marijnh/tern_for_vim', { 'dir': '~/.vim/plugged/tern_for_vim', 'do': 'npm i' }
-"Plug 'Valloric/YouCompleteMe', { 'dir': '~/.vim/plugged/YouCompleteMe', 'do': './install.sh' }
+Plug 'marijnh/tern_for_vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'kchmck/vim-coffee-script', { 'for': 'coffe' }
-Plug 'wavded/vim-stylus', { 'for': 'styl' }
+Plug 'wavded/vim-stylus'
+Plug 'facebook/vim-flow'
+Plug 'leafgarland/typescript-vim'
+Plug 'Shougo/neocomplete.vim'
+Plug 'clausreinke/typescript-tools.vim'
 call plug#end()
 
 filetype plugin indent on
@@ -75,9 +73,11 @@ set omnifunc=syntaxcomplete#Complete
 set clipboard=unnamed
 set guioptions=mg
 set background=dark
+
 if has("gui_running")
     set columns=180 lines=60
-    colorscheme hybrid 
+    " colorscheme hybrid 
+    colorscheme jellybeans
     if has("win32")
         set guifont=Consolas:h11:cRUSSIAN
     else
@@ -94,16 +94,29 @@ let g:molokai_original=1
 let g:airline#extensions#tabline#enabled=1
 " let mapleader=','
 
-let g:syntastic_javascript_checkers = [ 'jshint', 'jsxhint' ]
-let jshint2_read = 1
-let jshint2_save = 1
-let jshint2_close = 0
-let jshint2_confirm = 0
+" sometimes NODE_PATH has more then one path
+let nodePath = split($NODE_PATH, ':')[0]
+let g:syntastic_jscs_exec = nodePath . '/jscs'
+let g:syntastic_javascript_jsxhint_exec = nodePath . '/jsxhint'
+let g:syntastic_javascript_checkers = ['jsxhint','jscs']
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_aggregate_errors = 1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-let g:jsx_pragma_required = 1
+let g:flow#autoclose = 1
+
+let g:typescript_compiler_options = '-target ES5 -sourcemap --module commonjs'
+let g:syntastic_typescript_tsc_args = '-module commonjs -target ES5'
+let g:syntastic_typescript_checkers = ['tsc']
+let g:neocomplete#enable_at_startup = 1
 
 map <F1> :set background=dark<CR>
 map <F2> :set background=light<CR>
+
+nmap <Leader><Leader> :set lines=999<CR>
 
 nmap K A<CR><ESC>
 nmap cn :cnext<CR>
@@ -117,7 +130,6 @@ nmap <Leader>X :bdelete<CR>
 nmap <Tab> <C-w>w
 nmap <S-Tab> <C-w>W
 nmap <Space> :CtrlP<CR>
-nmap <Leader>j :JSHint<CR>
 
 map <C-S><C-S> :mksession! ~/vim_session <cr>
 map <C-S><C-R> :source ~/vim_session <cr>
@@ -127,16 +139,16 @@ nmap <Leader>; :NERDTree %<CR>
 vmap a: :Tab /:<CR>
 vmap a= :Tab /=<CR>
 
-nmap <Leader>d :TernDef<CR>
-nmap <Leader>D :TernDoc<CR>
-nmap <Leader>t :TernType<CR>
-nmap <Leader>r :TernRefs<CR>
-nmap <Leader>R :TernRename<CR>
+" typescript
+map <Leader>n :TSSnavigation<CR>
+nmap <Leader>d :TSSdef<CR>
+nmap <Leader>ds :TSSdefsplit<CR>
+nmap <Leader>dt :TSSdeftab<CR>
+nmap <Leader>r :TSSreferences<CR>
+map <Leader>s :TSSstart -module commonjs<CR>
 
 nnoremap <silent> F :Grep<CR> 
 nnoremap <CR> :nohlsearch<CR><CR>
-
-map <Leader>s :VimShell -split -split-command=split<CR>
 
 nnoremap <silent> <C-d> :lclose<CR>:bdelete<CR>
 cabbrev <silent> bd lclose\|bdelete
@@ -147,4 +159,12 @@ nmap S <Plug>(easymotion-s2)
 let g:EasyMotion_smartcase = 1
 map  <leader>/ <Plug>(easymotion-sn)
 
-au BufReadPost,BufWritePost *.js :SyntasticCheck
+" au BufReadPost,BufWritePost *.js :SyntasticCheck
+au BufNewFile,BufReadPost *.html setl tabstop=2 shiftwidth=2
+au BufRead,BufNewFile *.json set filetype=json
+au BufRead,BufNewFile *.ts setlocal filetype=typescript
+
+autocmd FileType typescript setlocal omnifunc=TSScompleteFunc
+
+" add TSS... commands
+let &runtimepath.=',~/.vim/plugged/typescript-tools.vim/'

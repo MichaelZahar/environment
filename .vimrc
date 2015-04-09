@@ -7,32 +7,29 @@ Plug 'baskerville/bubblegum'
 Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'whatyouhide/vim-gotham'
-Plug 'kien/ctrlp.vim'
 Plug 'bling/vim-airline'
+Plug 'kien/ctrlp.vim'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'mattn/emmet-vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'msanders/snipmate.vim'
-Plug 'Shutnik/jshint2.vim'
-Plug 'scrooloose/syntastic' ", { 'dir': '~/.vim/plugged/syntastic/', 'do': 'mkdir temp/ && git clone https://github.com/dstrek/syntastic-jsxhint.git temp/ && mv temp/jsx/ syntax_checkers/ && rm -rf temp/' }
+Plug 'scrooloose/syntastic'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'vim-scripts/JavaScript-Indent'
 Plug 'phleet/vim-mercenary'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'mxw/vim-jsx'
 Plug 'Raimondi/delimitMate'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'Shougo/vimproc.vim', { 'dir': '~/.vim/plugged/vimproc.vim', 'do': 'make' }
-Plug 'Shougo/vimshell.vim'
-Plug 'marijnh/tern_for_vim', { 'dir': '~/.vim/plugged/tern_for_vim', 'do': 'npm i' }
-"Plug 'Valloric/YouCompleteMe', { 'dir': '~/.vim/plugged/YouCompleteMe', 'do': './install.sh' }
+Plug 'marijnh/tern_for_vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'kchmck/vim-coffee-script', { 'for': 'coffe' }
-Plug 'wavded/vim-stylus', { 'for': 'styl' }
+Plug 'wavded/vim-stylus'
+Plug 'facebook/vim-flow'
+Plug 'leafgarland/typescript-vim'
+Plug 'Shougo/neocomplete.vim'
 call plug#end()
 
 filetype plugin indent on
@@ -70,14 +67,15 @@ set autoread
 set autowrite
 set noswapfile
 
-set omnifunc=syntaxcomplete#Complete
-
 set clipboard=unnamed
 set guioptions=mg
 set background=dark
+
 if has("gui_running")
     set columns=180 lines=60
-    colorscheme hybrid 
+    " colorscheme hybrid 
+    colorscheme jellybeans
+
     if has("win32")
         set guifont=Consolas:h11:cRUSSIAN
     else
@@ -94,13 +92,17 @@ let g:molokai_original=1
 let g:airline#extensions#tabline#enabled=1
 " let mapleader=','
 
-let g:syntastic_javascript_checkers = [ 'jshint', 'jsxhint' ]
-let jshint2_read = 1
-let jshint2_save = 1
-let jshint2_close = 0
-let jshint2_confirm = 0
+let g:syntastic_jscs_exec = '/Users/michael/.nvm/v0.12.0/bin/jscs'
+let g:syntastic_javascript_jsxhint_exec = '/Users/michael/.nvm/versions/v0.12.0/bin/jsxhint'
+let g:syntastic_javascript_checkers = ['jsxhint','jscs']
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_aggregate_errors = 1
 
-let g:jsx_pragma_required = 1
+let g:typescript_compiler_options = '-target ES5 -sourcemap -module commonjs'
+let g:syntastic_typescript_tsc_args = '--target ES5 -module commonjs'
+let g:syntastic_typescript_checkers = ['tslint']
+let g:neocomplete#enable_at_startup = 1
 
 map <F1> :set background=dark<CR>
 map <F2> :set background=light<CR>
@@ -118,6 +120,7 @@ nmap <Tab> <C-w>w
 nmap <S-Tab> <C-w>W
 nmap <Space> :CtrlP<CR>
 nmap <Leader>j :JSHint<CR>
+nmap <Leader><Leader> :set lines=999<CR>
 
 map <C-S><C-S> :mksession! ~/vim_session <cr>
 map <C-S><C-R> :source ~/vim_session <cr>
@@ -136,8 +139,6 @@ nmap <Leader>R :TernRename<CR>
 nnoremap <silent> F :Grep<CR> 
 nnoremap <CR> :nohlsearch<CR><CR>
 
-map <Leader>s :VimShell -split -split-command=split<CR>
-
 nnoremap <silent> <C-d> :lclose<CR>:bdelete<CR>
 cabbrev <silent> bd lclose\|bdelete
 
@@ -147,4 +148,11 @@ nmap S <Plug>(easymotion-s2)
 let g:EasyMotion_smartcase = 1
 map  <leader>/ <Plug>(easymotion-sn)
 
-au BufReadPost,BufWritePost *.js :SyntasticCheck
+" au BufReadPost,BufWritePost *.js :SyntasticCheck
+au BufNewFile,BufReadPost *.html setl tabstop=2 shiftwidth=2
+au BufRead,BufNewFile *.json set filetype=json
+au BufRead,BufNewFile *.ts setlocal filetype=typescript
+
+autocmd FileType typescript setlocal omnifunc=TSScompleteFunc
+
+set rtp+=/Users/michael/.nvm/versions/v0.12.0/lib/node_modules/typescript-tools/

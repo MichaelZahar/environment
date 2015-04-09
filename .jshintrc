@@ -1,0 +1,34 @@
+{
+    "passfail"      : false,
+    "maxerr"        : 100,
+ 
+    "browser"       : true,
+    "node"          : true,
+    "jquery"        : true,
+    "jasmine"       : true,
+    "mocha"         : true,
+ 
+    "devel"         : true,
+ 
+    "esnext"        : true,
+    "strict"        : false,
+
+    "curly"         : true,
+    "camelcase"     : true,
+    "eqeqeq"        : true,
+    "freeze"        : true,
+    "forin"         : true,
+    "funcscope"     : true,
+    "immed"         : true,
+    "indent"        : 2,
+    "latedef"       : true,
+    "maxcomplexity" : 10,
+    "maxdepth"      : 3,
+    "maxparams"     : 3,
+    "noarg"         : true,
+    "nonew"         : true,
+    "notypeof"      : true,
+    "shadow"        : "outer"
+    "undef"         : true,
+    "unused"        : true
+}

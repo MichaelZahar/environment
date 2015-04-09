@@ -7,8 +7,8 @@ Plug 'baskerville/bubblegum'
 Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'whatyouhide/vim-gotham'
-Plug 'kien/ctrlp.vim'
 Plug 'bling/vim-airline'
+Plug 'kien/ctrlp.vim'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -68,8 +68,6 @@ set autoread
 set autowrite
 set noswapfile
 
-set omnifunc=syntaxcomplete#Complete
-
 set clipboard=unnamed
 set guioptions=mg
 set background=dark
@@ -78,6 +76,7 @@ if has("gui_running")
     set columns=180 lines=60
     " colorscheme hybrid 
     colorscheme jellybeans
+
     if has("win32")
         set guifont=Consolas:h11:cRUSSIAN
     else
